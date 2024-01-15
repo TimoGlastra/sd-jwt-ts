@@ -10,7 +10,7 @@ on:
     workflow_dispatch:
         inputs:
             release-type:
-                description: 'Type of release (major, minor, patch, alpha)'
+                description: 'Type of release (major, minor, patch, prerelease)'
                 required: true
                 default: alpha
                 type: choice
@@ -18,7 +18,11 @@ on:
                     - major
                     - minor
                     - patch
-                    - alpha
+            pre-release:
+                description: 'Whether the release is a pre release. The release-type must be the same as th'
+                required: false
+                default: false
+                type: boolean
 
 jobs:
     continous-integration:
@@ -86,10 +90,8 @@ jobs:
                   git config --global user.email "sliedrecht@berend.io"
                   git config --global user.name "Berend Sliedrecht"
 
-                  if [ ${{ inputs.release-type }} == 'alpha' ]; then
-                    pnpm release --preRelease=${{ inputs.release-type }} --npm.tag=latest
-                    pnpm release:root --preRelease=${{ inputs.release-type }} --npm.tag=latest
+                  if [ ${{ inputs.pre-release }} == 'true' ]; then
+                    pnpm release pre${{ inputs.release-type }}
                   else
                     pnpm release ${{ inputs.release-type }}
-                    pnpm release:root ${{ inputs.release-type }}
                   fi
