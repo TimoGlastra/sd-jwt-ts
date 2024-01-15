@@ -11,7 +11,7 @@
 
 ### Bring your own crypto
 
-a
+aaa
 
 This library does not provide any of the cryptographic primitives required for
 encryption, decryption, signing, verification and hashing. It is expected that
